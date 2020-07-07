@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ijniclohot.logkarmobilechallenge.models.DestinationModel
+import com.ijniclohot.logkarmobilechallenge.models.OriginModel
 import com.ijniclohot.logkarmobilechallenge.repository.ApiRepository
 import com.ijniclohot.logkarmobilechallenge.utils.FormFillType
 
@@ -69,11 +71,13 @@ class FormViewModel : ViewModel() {
         _formReceiverValidation.value = mutableList
     }
 
-    fun saveSenderData() {
+    fun saveReceiverData(): DestinationModel {
         Log.d(TAG, "$receiverName - $receiverDistrict - $receiverPhone")
+        return DestinationModel(receiverName, receiverPhone, receiverDistrict)
     }
 
-    fun saveReceiverData() {
+    fun saveSenderData(): OriginModel {
         Log.d(TAG, "$senderName - $senderDistrict - $senderPhone")
+        return OriginModel(senderName, senderPhone, senderDistrict)
     }
 }

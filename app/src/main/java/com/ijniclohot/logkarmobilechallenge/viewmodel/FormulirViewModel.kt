@@ -8,8 +8,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ijniclohot.logkarmobilechallenge.models.CommodityModel
+import com.ijniclohot.logkarmobilechallenge.models.OrderModel
+import com.ijniclohot.logkarmobilechallenge.models.TransporterModel
 import com.ijniclohot.logkarmobilechallenge.models.TruckModel
 import com.ijniclohot.logkarmobilechallenge.repository.ApiRepository
+import com.ijniclohot.logkarmobilechallenge.repository.LocalRepository
 import com.ijniclohot.logkarmobilechallenge.utils.FormFillType
 import com.ijniclohot.logkarmobilechallenge.utils.SharedPrefUtils
 import kotlinx.coroutines.CoroutineScope
@@ -88,6 +91,7 @@ class FormulirViewModel(private val context: Context) : ViewModel() {
         refNo = _references.value
     }
 
+
     fun setValidation(fillType: FormFillType, index: Int) {
         (initialFormList as MutableList)[index] = fillType
         _formulirValidation.value = initialFormList
@@ -139,10 +143,21 @@ class FormulirViewModel(private val context: Context) : ViewModel() {
         }
     }
 
-    fun saveFormulir() {
+    fun saveFormulir(): TransporterModel {
         Log.d(
             TAG,
             "$truckType - $capacity - $quantityOrder - $unit - $refNo reference - on $startDeliveryDate - $note - $commodityName"
+
+        )
+        return TransporterModel(
+            truckType,
+            capacity,
+            unit,
+//            refNo,
+            startDeliveryDate,
+            note,
+            commodityName,
+            quantityOrder
         )
     }
 

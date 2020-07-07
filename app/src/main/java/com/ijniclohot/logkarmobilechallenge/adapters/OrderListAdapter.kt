@@ -46,4 +46,9 @@ class OrderListAdapter(private var orderList: ArrayList<OrderModel>, private val
         orderList.addAll(newList)
         notifyDataSetChanged()
     }
+
+    fun appendData(newList: List<OrderModel>) {
+        orderList.addAll(newList)
+        notifyDataSetChanged()
+    }
 }

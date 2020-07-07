@@ -1,11 +1,16 @@
 package com.ijniclohot.logkarmobilechallenge.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.ijniclohot.logkarmobilechallenge.models.OrderModel
+import com.ijniclohot.logkarmobilechallenge.repository.LocalRepository
 import com.ijniclohot.logkarmobilechallenge.utils.FormFillType
 
-class MainViewModel : ViewModel() {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
+    val localRepository = LocalRepository.getInstance(application)
+
     private val _tabValidation by lazy {
         MutableLiveData<List<FormFillType>>()
     }
@@ -23,6 +28,10 @@ class MainViewModel : ViewModel() {
     fun setValidation(formFillType: FormFillType, index: Int) {
         (initialValidation as MutableList)[index] = formFillType
         _tabValidation.value = initialValidation
+    }
+
+    fun saveOrder(orderModel: OrderModel) {
+        localRepository.saveOrder(orderModel)
     }
 
 

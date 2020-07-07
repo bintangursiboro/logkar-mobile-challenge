@@ -11,11 +11,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.ijniclohot.logkarmobilechallenge.adapters.MainPagerAdapter
+import com.ijniclohot.logkarmobilechallenge.models.OrderModel
 import com.ijniclohot.logkarmobilechallenge.utils.FormFillType
 import com.ijniclohot.logkarmobilechallenge.viewmodel.FormViewModel
 import com.ijniclohot.logkarmobilechallenge.viewmodel.FormulirViewModel
 import com.ijniclohot.logkarmobilechallenge.viewmodel.MainViewModel
 import com.ijniclohot.logkarmobilechallenge.viewmodel.factory.FormulirVMFactory
+import com.ijniclohot.logkarmobilechallenge.viewmodel.factory.MainVMFactory
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_formulir.*
 import java.util.*
@@ -38,6 +40,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mainViewModel: MainViewModel
 
+    private lateinit var mainVMFactory: MainVMFactory
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -49,7 +53,8 @@ class MainActivity : AppCompatActivity() {
         formulirViewModel =
             ViewModelProvider(this, FormulirVMFactory(this))[FormulirViewModel::class.java]
 
-        mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        mainViewModel =
+            ViewModelProvider(this, MainVMFactory(application))[MainViewModel::class.java]
 
         setObserver()
 
@@ -124,9 +129,10 @@ class MainActivity : AppCompatActivity() {
         btn_selesai.setBackgroundColor(ContextCompat.getColor(this, R.color.disabledGrey))
 
         btn_selesai.setOnClickListener {
-            formViewModel.saveReceiverData()
-            formViewModel.saveSenderData()
-            formulirViewModel.saveFormulir()
+            val destinationModel = formViewModel.saveReceiverData()
+            val originModel = formViewModel.saveSenderData()
+            val transporterModel = formulirViewModel.saveFormulir()
+            mainViewModel.saveOrder(OrderModel(originModel, destinationModel, transporterModel))
         }
 
         //Table Layout
